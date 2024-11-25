@@ -1,5 +1,6 @@
 ﻿using DemoProject.Input;
 using DemoProject.Physics;
+using UnityEngine;
 
 namespace DemoProject.Player
 {
@@ -7,13 +8,13 @@ namespace DemoProject.Player
     {
         private PlayerController m_Controller;
         private PlayerInputHandler m_InputHandler;
-        private RagdollController m_RagdollController;
+        private RagdollEnabler m_RagdollEnabler;
         
         public PlayerDeathState(PlayerContext ctx, bool needsExitTime = false, bool isGhostState = false) : base(ctx, needsExitTime, isGhostState)
         {
             m_Controller = Context.PlayerTransform.GetComponent<PlayerController>();
             m_InputHandler = Context.PlayerTransform.GetComponent<PlayerInputHandler>();
-            m_RagdollController = Context.PlayerTransform.GetComponent<RagdollController>();
+            m_RagdollEnabler = Context.PlayerTransform.GetComponent<RagdollEnabler>();
         }
 
         public override void OnEnter()
@@ -21,10 +22,7 @@ namespace DemoProject.Player
             m_Controller.enabled = false;
             m_InputHandler.enabled = false;
             Context.Animator.enabled = false;
-            m_RagdollController.Enable();
-            Context.CameraManager.SetDeathCamera();
-
-            Context.PlayerDeadEventChannel.Raise(Context.PlayerTransform);
+            m_RagdollEnabler.Enable();
         }
     }
 }

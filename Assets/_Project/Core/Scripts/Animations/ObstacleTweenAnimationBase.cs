@@ -9,8 +9,11 @@ namespace DemoProject.Animations
     {
         [SerializeField]
         protected Transform m_Transform;
-        
-        [HideLabel, BoxGroup, OnValueChanged(nameof(RestartAnimation))]
+
+#if UNITY_EDITOR
+        [OnValueChanged(nameof(RestartAnimation))]
+#endif
+        [HideLabel, BoxGroup]
         public T AnimationData;
 
         protected Tween m_CurrentTween;

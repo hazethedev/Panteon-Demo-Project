@@ -1,26 +1,35 @@
-﻿using System;
-using DemoProject.Player;
-using DG.Tweening;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace DemoProject.Physics
+namespace DemoProject.LevelManagement
 {
     public class ForceApplier : MonoBehaviour
     {
-        public Vector3 Force;
+        public float ForceStrength;
         
-        private void OnTriggerEnter(Collider other)
+        private void OnCollisionEnter(Collision other)
         {
-            if (other.TryGetComponent(out MovementHandler handler))
+            if (other.gameObject.TryGetComponent<CompetitorBase>(out var levelPlayerBase))
             {
-                var modifierId = -1;
-                DOVirtual.Float(0f, .25f, .25f, _ =>
-                    {
-                        // handler.ChangeModifier(new Vector3(0f, 10f, 500f));
-                    })
-                    .OnStart(() => modifierId = handler.AddModifier(Force))
-                    .OnComplete(() => handler.RemoveModifier(modifierId));
+                var stickPosition = transform.position;
+                var playerPosition = levelPlayerBase.transform.position;
+                
+                var forceDirection = Vector3.zero;
 
+                var xDifference = playerPosition.x - stickPosition.x;
+                var zDifference = playerPosition.z - stickPosition.z;
+
+                if (Mathf.Abs(xDifference) > Mathf.Abs(zDifference))
+                {
+                    forceDirection = xDifference > 0 ? Vector3.right : Vector3.left;
+                }
+                else
+                {
+                    forceDirection = zDifference > 0 ? Vector3.forward : Vector3.back;
+                }
+
+                forceDirection *= ForceStrength;
+                forceDirection.y = 5f;
+                levelPlayerBase.Push(forceDirection);
             }
         }
     }

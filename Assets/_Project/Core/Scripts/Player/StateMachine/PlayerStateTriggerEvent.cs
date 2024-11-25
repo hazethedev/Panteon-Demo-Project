@@ -2,6 +2,6 @@
 {
     public enum PlayerStateTriggerEvent
     {
-        Jump, Dead, Throw
+        Ground, Jump, Dead
     }
 }

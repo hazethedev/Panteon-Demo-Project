@@ -1,5 +1,4 @@
-﻿using DemoProject.EventSystem;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
 namespace DemoProject.EventSystem

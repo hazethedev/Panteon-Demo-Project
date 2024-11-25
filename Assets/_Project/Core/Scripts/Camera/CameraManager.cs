@@ -7,30 +7,64 @@ namespace DemoProject
 {
     public class CameraManager : MonoBehaviour
     {
-        public CinemachineVirtualCamera GameplayCamera;
-        public CinemachineVirtualCamera DeathCamera;
+        public CinemachineBrain Brain;
+        public LevelCamera[] Cameras;
+
+        private const int k_DisabledPriority = 10;
+        private const int k_EnabledPriority = 20;
+
+        private LevelCamera m_Current;
 
         private void Awake()
         {
-            GameplayCamera.Priority = 20;
-            DeathCamera.Priority = 10;
-            DeathCamera.enabled = false;
+            SetCamera(CameraType.Gameplay);
         }
 
-        public void SetDeathCamera()
+        public void SetCamera(CameraType type)
         {
-            GameplayCamera.Priority = 10;
-            DeathCamera.Priority = 20;
-            DeathCamera.enabled = true;
-            GameplayCamera.enabled = false;
+            foreach (var levelCamera in Cameras)
+            {
+                if (levelCamera.Type == type)
+                {
+                    m_Current = levelCamera;
+                    m_Current.VirtualCamera.Priority = k_EnabledPriority;
+                    continue;
+                }
+
+                levelCamera.VirtualCamera.Priority = k_DisabledPriority;
+            }
         }
-        
-        public void SetGameplayCamera()
+
+        public ICinemachineCamera GetCamera(CameraType type)
         {
-            DeathCamera.Priority = 10;
-            GameplayCamera.Priority = 20;
-            GameplayCamera.enabled = true;
-            DeathCamera.enabled = false;
+            foreach (var levelCamera in Cameras)
+            {
+                if (levelCamera.Type == type)
+                {
+                    return levelCamera.VirtualCamera;
+                }
+            }
+
+            return null;
         }
+
+        public void OnPlayerDead(Transform playerTransform)
+        {
+            SetCamera(CameraType.Death);
+        }
+    }
+
+    public enum CameraType
+    {
+        Gameplay,
+        Death,
+        Finish
+    }
+
+    [Serializable]
+    public class LevelCamera
+    {
+        public CameraType Type;
+        public CinemachineVirtualCamera VirtualCamera;
     }
 }

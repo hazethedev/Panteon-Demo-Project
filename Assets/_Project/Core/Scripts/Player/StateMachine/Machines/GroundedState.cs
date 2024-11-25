@@ -30,14 +30,6 @@ namespace DemoProject.Player
         {
             base.OnLogic();
             HandleAnimation();
-
-            if (!m_Controller.IsGrounded)
-            {
-                if (m_Controller.InDangerZone)
-                {
-                    ((StateMachine<PlayerStateId, PlayerStateTriggerEvent>)ParentFsm).Trigger(PlayerStateTriggerEvent.Dead);
-                }
-            }
         }
 
         private void HandleAnimation()

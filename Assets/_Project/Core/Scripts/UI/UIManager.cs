@@ -1,5 +1,7 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using DemoProject.Collectibles;
+using DemoProject.Infrastructure;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -15,11 +17,16 @@ namespace DemoProject.UI
         public Image CoinUIImage;
         public TextMeshProUGUI CoinText;
 
+        public TextMeshProUGUI PlayerDeadCountText;
+
+        public Button RestartButton;
+
         private Camera m_Camera;
         private ObjectPool<Image> m_ImageObjectPool;
         private StringBuilder m_CoinTextBuilder;
 
-        private int CoinCollectCount;
+        private int m_CoinCollectCount;
+        private int m_DeadCount = -1;
 
         private void Awake()
         {
@@ -27,6 +34,22 @@ namespace DemoProject.UI
             m_Camera = Camera.main;
             m_CoinTextBuilder = new StringBuilder(5).Insert(0, '0');
             UpdateCoinText();
+            RaiseDeadCount();
+        }
+
+        private void OnEnable()
+        {
+            RestartButton.onClick.AddListener(OnRestartButtonClick);
+        }
+
+        private void OnDisable()
+        {
+            RestartButton.onClick.RemoveListener(OnRestartButtonClick);
+        }
+
+        private void OnRestartButtonClick()
+        {
+            GameManager.Instance.ChangeScene(0);
         }
 
         private void OnDestroy()
@@ -36,7 +59,7 @@ namespace DemoProject.UI
 
         public void PlayCollectibleAnimation(Collectible collected)
         {
-            CoinCollectCount += collected.Amount;
+            m_CoinCollectCount += collected.Amount;
             
             var screenPosition = m_Camera.WorldToScreenPoint(collected.transform.position);
             
@@ -102,8 +125,14 @@ namespace DemoProject.UI
         
         private void UpdateCoinText()
         {
-            m_CoinTextBuilder.Clear().Append(CoinCollectCount);
+            m_CoinTextBuilder.Clear().Append(m_CoinCollectCount);
             CoinText.SetText(m_CoinTextBuilder);
+        }
+
+        public void RaiseDeadCount()
+        {
+            m_DeadCount++;
+            PlayerDeadCountText.SetText(m_DeadCount.ToString());
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using DemoProject.EventSystem;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -12,8 +11,6 @@ namespace DemoProject.Player
         [Header("References")]
         public Animator Animator;
         public Transform PlayerTransform;
-        // public PlayerController Controller;
-        public CameraManager CameraManager;
 
         [Header("Animator")]
         [ValueDropdown(nameof(GetAnimatorParamsDropdown))]
@@ -27,24 +24,24 @@ namespace DemoProject.Player
         [ValueDropdown(nameof(GetAnimatorParamsDropdown))]
         public string IsGroundedParamName;
         [HideInInspector] public int IsGroundedParamHash;
-
-        [NonSerialized] 
-        public PlayerDeadEvent PlayerDeadEventChannel;
+        
+        [ValueDropdown(nameof(GetAnimatorParamsDropdown))]
+        public string IsJumpingParamName;
+        [HideInInspector] public int IsJumpingParamHash;
 
         public void Init()
         {
             MovementBlendXParamHash = Animator.StringToHash(MovementBlendXParamName);
             MovementBlendYParamHash = Animator.StringToHash(MovementBlendYParamName);
             IsGroundedParamHash = Animator.StringToHash(IsGroundedParamName);
+            IsJumpingParamHash = Animator.StringToHash(IsJumpingParamName);
         }
 
-#if UNITY_EDITOR
         private IEnumerable GetAnimatorParamsDropdown()
         {
             if (Animator == null) return null;
             var parameters = Animator.parameters;
             return Array.ConvertAll(parameters, (param) => param.name);
         }
-#endif
     }
 }

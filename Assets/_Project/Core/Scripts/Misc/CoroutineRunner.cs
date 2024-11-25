@@ -34,9 +34,8 @@ namespace DemoProject.Misc
 
         public void Stop(int id)
         {
-            if (m_RoutineDictionary.TryGetValue(id, out var routine))
+            if (m_RoutineDictionary.Remove(id, out var routine))
             {
-                m_RoutineDictionary.Remove(id);
                 StopCoroutine(routine);
             }
         }

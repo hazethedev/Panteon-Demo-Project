@@ -12,9 +12,13 @@ namespace DemoProject.Player
             m_Controller = controller;
         }
         
-        void IPlayerRotationBehaviour.Rotate(in Vector3 input, float deltaTime)
+        void IPlayerRotationBehaviour.Rotate(in Vector3 currentInput, ref Quaternion currentRotation, float deltaTime)
         {
-            m_Controller.transform.LookAt(Target, Vector3.up);
+            var directionToTarget = Target.position - m_Controller.transform.position;
+            if (!(directionToTarget.sqrMagnitude > 0f)) return;
+            
+            var targetRotation = Quaternion.LookRotation(directionToTarget, Vector3.up);
+            currentRotation = Quaternion.Slerp(currentRotation, targetRotation, m_Controller.RotationSpeed * deltaTime);
         }
     }
 }

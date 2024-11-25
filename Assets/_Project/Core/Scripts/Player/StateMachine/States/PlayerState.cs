@@ -1,4 +1,5 @@
-﻿using UnityHFSM;
+﻿using UnityEngine;
+using UnityHFSM;
 
 namespace DemoProject.Player
 {
@@ -9,6 +10,11 @@ namespace DemoProject.Player
         public PlayerState(PlayerContext ctx, bool needsExitTime = false, bool isGhostState = false) : base(needsExitTime, isGhostState)
         {
             Context = ctx;
+        }
+
+        public override void OnEnter()
+        {
+            base.OnEnter();
         }
     }
 }

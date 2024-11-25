@@ -1,7 +1,6 @@
-﻿using DemoProject.Input;
-using DemoProject.Player;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.OnScreen;
 using VContainer;
 
 namespace DemoProject.Input
@@ -11,6 +10,7 @@ namespace DemoProject.Input
     {
         private IMovementInputReceiver m_MovementInputReceiver;
         private GameInputs m_GameInputs;
+        private OnScreenStick m_ScreenStick;
         private bool m_WaitingForInjection = false;
 
         private void Awake()
@@ -30,6 +30,7 @@ namespace DemoProject.Input
             m_GameInputs.Player.Move.started += OnMoveStart;
             m_GameInputs.Player.Move.performed += OnMovePerform;
             m_GameInputs.Player.Move.canceled += OnMoveCancel;
+            m_ScreenStick.enabled = true;
         }
 
         private void OnDisable()
@@ -39,6 +40,7 @@ namespace DemoProject.Input
             m_GameInputs.Player.Move.performed -= OnMovePerform;
             m_GameInputs.Player.Move.canceled -= OnMoveCancel;
             m_GameInputs.Disable();
+            if (m_ScreenStick != null) m_ScreenStick.enabled = false;
             m_MovementInputReceiver.SetInput(Vector3.zero, InputEvent.Cancel);
         }
 
@@ -64,9 +66,10 @@ namespace DemoProject.Input
         #region Dependency Injection
 
         [Inject]
-        private void Construct(GameInputs gameInputs)
+        private void Construct(GameInputs gameInputs, OnScreenStick screenStick)
         {
             m_GameInputs = gameInputs;
+            m_ScreenStick = screenStick;
 
             if (!enabled && m_WaitingForInjection)
             {

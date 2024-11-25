@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1757719953731196540}
   - component: {fileID: 2819921131956215439}
-  - component: {fileID: 8957960902400275771}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -45,32 +44,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8143d05547992f74c99111ba863721b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8957960902400275771
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2270892330398941494}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7be12189fad841b49582979002cb6695, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <GameEvent>k__BackingField: {fileID: 11400000, guid: 048c814510116194e92cfd19b1fb3355,
-    type: 2}
-  m_UnityEventResponse:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2819921131956215439}
-        m_TargetAssemblyTypeName: DemoProject.Infrastructure.GameManager, Assembly-CSharp
-        m_MethodName: TryRespawnPlayer
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
